@@ -1,35 +1,25 @@
-import { createSignal, Show } from "solid-js";
-import { BookList } from "./BookList";
-import { AddBook } from "./AddBook";
-export type Book = {
-  title: string;
-  author: string;
-};
-const initialBooks: Book[] = [
-  { title: "Code Complete", author: "Steve McConnell" },
-  { title: "The Hobbit", author: "J.R.R. Tolkien" },
-  { title: "Living a Feminist Life", author: "Sarah Ahmed" },
-];
-interface IBookshelfProps {
-  name: string;
-}
-function Bookshelf(props: IBookshelfProps) {
-  const [books, setBooks] = createSignal(initialBooks);
-  const [showForm, setShowForm] = createSignal(false);
-  const toggleForm = () => setShowForm(!showForm());
-  return (
-    <div>
-      <h1>{props.name}'s Bookshelf</h1>
-      <BookList books={books()} />
-      <Show
-        when={showForm()}
-        fallback={<button onClick={toggleForm}>Add a book</button>}
-      >
-        <AddBook setBooks={setBooks} />
-        <button onClick={toggleForm}>Finished adding books</button>
-      </Show>
-    </div>
-  );
-}
+import {Link, Route, Routes} from 'solid-app-router';
+import {lazy} from "solid-js";
+import type { Component } from 'solid-js';
+const SolidLogo = lazy(() => import('./SolidLogo'));
+const Bookshelf = lazy(() => import('./Bookshelf'));
+const BookDetail = lazy(() => import('./BookDetail'));
 
-export default <Bookshelf name="solid" />;
+const App: Component = () => {
+  return (
+    <>
+      <h1>My Site with Lots of Pages</h1>
+      <nav>
+        <Link href='/'>Home</Link>
+        <Link href='/books'>Books</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<SolidLogo />}/>
+        <Route path="/books" element={<Bookshelf name="solid" />}/>
+        <Route path="/books/:bookId" element={<BookDetail />}/>
+      </Routes>
+    </>
+  );
+};
+
+export default App;

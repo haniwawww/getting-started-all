@@ -1,5 +1,5 @@
-import {createSignal, Setter, JSX, createResource, For, Show} from "solid-js";
-import { Book } from "./App";
+import {createSignal, Setter, createResource, For, Show} from "solid-js";
+import { Book } from "./Bookshelf";
 import { searchBooks } from "./searchBooks";
 export interface IAddBookProps {
   setBooks: Setter<Book[]>;
